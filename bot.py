@@ -9,9 +9,9 @@ def down_yt(url):
     try:
         for file in glob.glob('audio.*'):
             os.remove(file)
-        print("Downloading...")
+        print("\nDownloading...\n")
         subprocess.run(['yt-dlp', '-f', 'ba', '-o', 'audio.%(ext)s', url], check=True)
-        print(f"Succesfully converted")
+        print("\nSuccesfully converted\n")
         return 1
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -32,7 +32,8 @@ def transcribe_audio():
         return None
 
 def gen_comments(text): 
-    os.remove('comment.txt')
+    for file in glob.glob('comment.txt'):
+        os.remove(file)
     model_id = "meta-llama/Llama-3.2-3B-Instruct"
     pipe = pipeline(
         "text-generation",
@@ -41,7 +42,7 @@ def gen_comments(text):
         device_map="cuda",
     )
     messages = [
-        {"role": "system", "content": "Given the transcript to a YouTube video, generate 3-4 comments on it."},
+        {"role": "system", "content": "Given the transcript to a YouTube video, generate 3-4 comments on it. One comment can ask a question, the rest should just comment on the contents of the video."},
         {"role": "video_transcript", "content": text},
     ]
     print("\nBeginning comment generation...\n")
@@ -60,9 +61,9 @@ if __name__ == "__main__":
         if text:
             with open("text.txt", "w") as f:
                 f.write(text)
-            print("Transcribed")
+            print("\nTranscribed\n")
             comment = gen_comments(text)
-            print("Comments generated")
+            print("\nComments generated\n")
             if comment:
                 with open("comment.txt", "w") as f:
                     f.write(comment)
