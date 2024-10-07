@@ -34,7 +34,7 @@ With this project, we aim to show how AI can simulate intelligent interaction, b
 
 ### Clone the repository
 ```bash
-git clone https://github.com/yourusername/CommentBot.git
+git clone https://github.com/alexsio03/CommentBot.git
 cd CommentBot
 ```
 
